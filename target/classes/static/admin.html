@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração - Cinema</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<header class="main-header">
+    <h1>Cinema – Painel do Administrador</h1>
+    <button id="logout-btn" class="secondary-btn">Sair</button>
+</header>
+
+<main class="content">
+    <section class="add-section">
+        <h2>Adicionar Filme</h2>
+        <form id="add-form" class="movie-form" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="add-title">Título</label>
+                    <input type="text" id="add-title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="add-category">Categoria</label>
+                    <input type="text" id="add-category" name="category" required>
+                </div>
+                <div class="form-group">
+                    <label for="add-poster">Cartaz</label>
+                    <input type="file" id="add-poster" name="poster" accept="image/*" required>
+                </div>
+            </div>
+            <button type="submit" class="primary-btn">Adicionar</button>
+        </form>
+    </section>
+
+    <section class="list-section">
+        <h2>Filmes Cadastrados</h2>
+        <div id="movies-grid" class="movies-grid"></div>
+    </section>
+</main>
+
+<script>
+    // Redireciona para login se não estiver logado
+    if (localStorage.getItem('loggedIn') !== 'true') {
+        window.location.href = 'login.html';
+    }
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('loggedIn');
+        window.location.href = 'login.html';
+    });
+
+    async function loadMovies() {
+        const res = await fetch('/api/movies');
+        const movies = await res.json();
+        const grid = document.getElementById('movies-grid');
+        grid.innerHTML = '';
+        movies.forEach(movie => {
+            const card = createMovieCard(movie);
+            grid.appendChild(card);
+        });
+    }
+
+    function createMovieCard(movie) {
+        const card = document.createElement('div');
+        card.className = 'movie-card';
+
+        const img = document.createElement('img');
+        img.src = movie.posterUrl || 'https://via.placeholder.com/200x300';
+        img.alt = movie.title;
+        card.appendChild(img);
+
+        const details = document.createElement('div');
+        details.className = 'movie-details';
+        const title = document.createElement('h3');
+        title.textContent = movie.title;
+        const category = document.createElement('p');
+        category.textContent = 'Categoria: ' + movie.category;
+        details.appendChild(title);
+        details.appendChild(category);
+        card.appendChild(details);
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Editar';
+        editBtn.className = 'secondary-btn';
+        editBtn.addEventListener('click', () => {
+            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+        });
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Excluir';
+        deleteBtn.className = 'danger-btn';
+        deleteBtn.addEventListener('click', () => deleteMovie(movie.id));
+        actions.appendChild(editBtn);
+        actions.appendChild(deleteBtn);
+        card.appendChild(actions);
+
+        // Formulário de edição oculto por padrão
+        const editForm = document.createElement('form');
+        editForm.className = 'edit-form movie-form';
+        editForm.style.display = 'none';
+        editForm.enctype = 'multipart/form-data';
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(editForm);
+            const res = await fetch(`/api/movies/${movie.id}`, {
+                method: 'PUT',
+                body: formData
+            });
+            if (res.ok) {
+                loadMovies();
+            } else {
+                alert('Erro ao atualizar filme');
+            }
+        });
+        // Campos do formulário de edição
+        // Título
+        const titleGroup = document.createElement('div');
+        titleGroup.className = 'form-group';
+        const titleLabel = document.createElement('label');
+        titleLabel.textContent = 'Título';
+        const titleInput = document.createElement('input');
+        titleInput.type = 'text';
+        titleInput.name = 'title';
+        titleInput.value = movie.title;
+        titleGroup.appendChild(titleLabel);
+        titleGroup.appendChild(titleInput);
+        // Categoria
+        const catGroup = document.createElement('div');
+        catGroup.className = 'form-group';
+        const catLabel = document.createElement('label');
+        catLabel.textContent = 'Categoria';
+        const catInput = document.createElement('input');
+        catInput.type = 'text';
+        catInput.name = 'category';
+        catInput.value = movie.category;
+        catGroup.appendChild(catLabel);
+        catGroup.appendChild(catInput);
+        // Poster
+        const posterGroup = document.createElement('div');
+        posterGroup.className = 'form-group';
+        const posterLabel = document.createElement('label');
+        posterLabel.textContent = 'Cartaz';
+        const posterInput = document.createElement('input');
+        posterInput.type = 'file';
+        posterInput.name = 'poster';
+        posterInput.accept = 'image/*';
+        posterGroup.appendChild(posterLabel);
+        posterGroup.appendChild(posterInput);
+        // Botões
+        const buttonsDiv = document.createElement('div');
+        buttonsDiv.className = 'edit-actions';
+        const saveButton = document.createElement('button');
+        saveButton.type = 'submit';
+        saveButton.className = 'primary-btn';
+        saveButton.textContent = 'Salvar';
+        const cancelButton = document.createElement('button');
+        cancelButton.type = 'button';
+        cancelButton.className = 'secondary-btn';
+        cancelButton.textContent = 'Cancelar';
+        cancelButton.addEventListener('click', () => {
+            editForm.style.display = 'none';
+        });
+        buttonsDiv.appendChild(saveButton);
+        buttonsDiv.appendChild(cancelButton);
+        // Adiciona tudo ao form
+        editForm.appendChild(titleGroup);
+        editForm.appendChild(catGroup);
+        editForm.appendChild(posterGroup);
+        editForm.appendChild(buttonsDiv);
+        card.appendChild(editForm);
+        return card;
+    }
+
+    async function deleteMovie(id) {
+        if (!confirm('Deseja realmente excluir este filme?')) return;
+        const res = await fetch(`/api/movies/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            loadMovies();
+        } else {
+            alert('Erro ao excluir filme');
+        }
+    }
+
+    // Tratamento do formulário de adicionar
+    document.getElementById('add-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = document.getElementById('add-form');
+        const formData = new FormData(form);
+        const res = await fetch('/api/movies', {
+            method: 'POST',
+            body: formData
+        });
+        if (res.ok) {
+            form.reset();
+            loadMovies();
+        } else {
+            alert('Erro ao adicionar filme');
+        }
+    });
+
+    // Carrega os filmes ao abrir a página
+    loadMovies();
+</script>
+
+</body>
+</html>
