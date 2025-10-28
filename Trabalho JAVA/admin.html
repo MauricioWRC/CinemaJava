@@ -1,0 +1,207 @@
+ <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinema</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="imagem/popcorn.png" type="image/x-icon" />
+
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <div class="logo-menu">
+        <img src="imagem/Aqua 600.png" alt="Cinema" class="logo">
+        <nav class="menu">
+          <a href="#">Em Cartaz</a>
+          <a href="#">Em Breve</a>
+          <a href="#">Cinema Club</a>
+        </nav>
+      </div>
+
+       <div class="busca-container">
+        <input type="text" placeholder="Buscar filmes..." class="campo-busca">
+        <button class="botao-busca">🔍</button>
+      </div>
+
+      
+      <div class="botoes">
+        <button class="botao">Entrar</button>
+        <button class="botao destaque">Comprar Ingresso</button>
+        <a href="index.html" class="botao">Principal</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner / Carrossel -->
+<section class="banner">
+  <div class="slide ativo">
+    <img src="imagem/img_cinema.jpg" alt="Banner 1">
+  </div>
+  <div class="slide">
+    <img src="imagem/img_war.jpg" alt="Banner 2">
+  </div>
+  <div class="slide">
+    <img src="imagem/img_dramatic.jpg" alt="Banner 3">
+  </div>
+   <div class="slide">
+    <img src="imagem/img_luta.jpg" alt="Banner 4">
+  </div>
+   <div class="slide">
+    <img src="imagem/img_assustador.jpg" alt="Banner 5">
+  </div>
+
+  <!-- Botões -->
+  <button class="anterior">&#10094;</button>
+  <button class="proximo">&#10095;</button>
+</section>
+
+
+  <!--principal -->
+   <section class="filmes">
+      <h1>Em cartaz</h1>
+      <p class="descricao">Confira os filmes em exibição e horários nos cinemas.</p>
+
+      <div class="carrossel-container">
+        <button class="seta esquerda" id="seta-esquerda">&#10094;</button>
+
+        <div class="lista-filmes" id="lista-filmes">
+          <div class="filme">
+            <img src="imagem/img_cinema.jpg" alt="Apresentação">
+            <div class="info">
+              <h3>Apresentação</h3>
+              <p class="genero">Avisos · 15m</p>
+            </div>
+          </div>
+
+          <div class="filme">
+            <img src="imagem/img_war.jpg" alt="A guerra">
+            <div class="info">
+              <h3>A Guerra</h3>
+              <p class="genero">Ação · 120m</p>
+            </div>
+          </div>
+
+          <div class="filme">
+            <img src="imagem/img_dramatic.jpg" alt="A Casa do Horror">
+            <div class="info">
+              <h3>A Casa do Horror</h3>
+              <p class="genero">Terror · 100m</p>
+            </div>
+          </div>
+
+          <div class="filme">
+            <img src="imagem/img_romance.jpg" alt="Romance ao Luar">
+            <div class="info">
+              <h3>Romance ao Luar</h3>
+              <p class="genero">Romance · 90m</p>
+            </div>
+          </div>
+
+          <div class="filme">
+            <img src="imagem/img_animacao.jpg" alt="O Reino Encantado">
+            <div class="info">
+              <h3>O Reino Encantado</h3>
+              <p class="genero">Animação · 110m</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="seta direita" id="seta-direita">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- Barra lateral -->
+    <aside class="destaques">
+      <h2>Em destaque</h2>
+      <ul>
+        <li>
+          <span>Pré-venda: Wicked</span>
+          <a href="#">Comprar</a>
+        </li>
+        <li>
+          <span>Cinema Club</span>
+          <a href="#">Saiba mais</a>
+        </li>
+        <li>
+          <span>Salas XD</span>
+          <a href="#">Ver</a>
+        </li>
+      </ul>
+    </aside>
+  </main>
+    <!-- Cadastro de Filmes (Admin) -->
+    <section class="cadastro-filmes container">
+      <h1>Cadastro de Filmes 🎬</h1>
+      <p class="descricao">Preencha as informações abaixo para adicionar um novo filme.</p>
+
+      <form id="form-filme">
+        <div class="form-group">
+          <label for="nome">Nome do Filme:</label>
+          <input type="text" id="nome" placeholder="Digite o nome do filme" required>
+        </div>
+
+        <div class="form-group">
+          <label for="genero">Gênero:</label>
+          <input type="text" id="genero" placeholder="Ex: Ação, Comédia, Drama" required>
+        </div>
+
+        <div class="form-group">
+          <label for="idade">Classificação Indicativa:</label>
+          <input type="number" id="idade" placeholder="Ex: 12" min="0" required>
+        </div>
+
+        <div class="form-group">
+          <label for="duracao">Duração (minutos):</label>
+          <input type="number" id="duracao" placeholder="Ex: 120" min="1" required>
+        </div>
+
+        <div class="form-group">
+          <label for="lancamento">Data de Lançamento:</label>
+          <input type="date" id="lancamento" required>
+        </div>
+
+        <div class="form-group">
+          <label for="poster">URL do Pôster:</label>
+          <input type="url" id="poster" placeholder="Cole o link da imagem" required>
+        </div>
+
+        <div class="form-group">
+          <label for="sinopse">Sinopse:</label>
+          <textarea id="sinopse" rows="4" placeholder="Digite a sinopse do filme..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-enviar">Cadastrar Filme</button>
+      </form>
+    </section>
+
+  <!-- Rodapé -->
+  <footer class="rodape">
+    <div class="container rodape-conteudo">
+      <div>
+        <h4>Cinema</h4>
+        <ul>
+          <li>Sobre</li>
+          <li>Acessibilidade</li>
+          <li>Imprensa</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <p>Central de Atendimento</p>
+      </div>
+      <div>
+        <h4>Redes</h4>
+        <div class="redes">
+          <a href="#">Facebook</a>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+    <p class="copy">Copyright © 2025</p>
+  </footer>
+  <script src="script.js"></script>
+
+</body>
+</html>
