@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin • Filmes</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="shortcut icon" href="imagem/popcorn.png" type="image/x-icon" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="logo-menu">
+        <img src="imagem/Aqua 600.png" alt="Cinema" class="logo" />
+        <nav class="menu">
+          <a href="index.html">Home</a>
+          <a href="Controller">Lista (server)</a>
+        </nav>
+      </div>
+      <div class="botoes">
+        <a href="index.html" class="botao">Voltar</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 20px 0">
+    <section class="card" style="margin-bottom:16px">
+      <h2>Novo / Editar filme</h2>
+      <!-- importante: enctype multipart para upload -->
+      <form id="movie-form" enctype="multipart/form-data">
+        <input type="hidden" id="id" name="id" />
+        <div class="row"><label>Nome</label><input id="nome" name="nome" required /></div>
+        <div class="row"><label>Gênero</label><input id="genero" name="genero" required /></div>
+        <div class="row"><label>Classificação (idade)</label><input id="idade" name="idade" type="number" min="0" required /></div>
+        <div class="row"><label>Duração (min)</label><input id="duracao" name="duracao" type="number" step="0.1" min="0" required /></div>
+        <div class="row"><label>Lançamento (YYYY-MM-DD)</label><input id="lancamento" name="lancamento" placeholder="2025-01-15" /></div>
+        <div class="row"><label>Poster (URL – opcional)</label><input id="poster" name="poster" placeholder="https://..." /></div>
+        <div class="row"><label>Ou enviar imagem</label><input id="posterFile" name="posterFile" type="file" accept="image/*" /></div>
+        <div class="actions">
+          <button type="submit" id="save-btn">Salvar</button>
+          <button type="button" id="cancel-btn" class="secondary">Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Filmes cadastrados</h2>
+      <table id="movies-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Poster</th>
+            <th>Nome</th>
+            <th>Gênero</th>
+            <th>Idade</th>
+            <th>Duração</th>
+            <th>Lançamento</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody><!-- preenchido via JS --></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="rodape"><p class="copy">Admin • © 2025</p></footer>
+  <script src="js/script.js"></script>
+</body>
+</html>
