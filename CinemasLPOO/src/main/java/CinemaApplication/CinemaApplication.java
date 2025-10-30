@@ -3,11 +3,11 @@ package CinemaApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.example.cinema.model.Cinema;
-import com.example.cinema.model.Movie;
-import com.example.cinema.model.db.DatabaseHelper;
-import com.example.cinema.repository.CinemaDao;
-import com.example.cinema.repository.MovieDao;
+import model.Cinema;
+import model.Movie;
+import model.db.DatabaseHelper;
+import repository.CinemaDao;
+import repository.MovieDao;
 
 
 /**
