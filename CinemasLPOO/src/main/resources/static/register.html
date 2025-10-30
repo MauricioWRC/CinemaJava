@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar - Cinema</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="login-body">
+<div class="login-container">
+    <h1>Criar Conta</h1>
+    <form id="register-form" class="login-form">
+        <div class="form-group">
+            <label for="reg-username">Usuário</label>
+            <input type="text" id="reg-username" required>
+        </div>
+        <div class="form-group">
+            <label for="reg-password">Senha</label>
+            <input type="password" id="reg-password" required>
+        </div>
+        <button type="submit" class="primary-btn">Registrar</button>
+        <p id="register-error" class="error-msg" style="display:none;"></p>
+        <p id="register-success" style="display:none; color: green;">Cadastro realizado com sucesso! Faça login.</p>
+    </form>
+    <p>Já tem uma conta? <a href="login.html">Entrar</a></p>
+</div>
+
+<script>
+    document.getElementById('register-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const username = document.getElementById('reg-username').value;
+        const password = document.getElementById('reg-password').value;
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const errorEl = document.getElementById('register-error');
+        const successEl = document.getElementById('register-success');
+        if (res.status === 201) {
+            errorEl.style.display = 'none';
+            successEl.style.display = 'block';
+            successEl.textContent = 'Cadastro realizado com sucesso! Faça login.';
+        } else if (res.status === 409) {
+            errorEl.textContent = 'Usuário já existe';
+            errorEl.style.display = 'block';
+            successEl.style.display = 'none';
+        } else {
+            const text = await res.text();
+            errorEl.textContent = text || 'Erro ao registrar';
+            errorEl.style.display = 'block';
+            successEl.style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

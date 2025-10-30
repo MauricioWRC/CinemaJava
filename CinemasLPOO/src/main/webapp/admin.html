@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração - Cinema</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="main-header">
+    <h1>Cinema – Painel do Administrador</h1>
+    <button id="logout-btn" class="secondary-btn">Sair</button>
+</header>
+
+<main class="content">
+    <section class="add-section">
+        <h2>Adicionar Filme</h2>
+        <form id="add-form" class="movie-form" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="add-title">Título</label>
+                    <input type="text" id="add-title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="add-category">Categoria</label>
+                    <input type="text" id="add-category" name="category" required>
+                </div>
+                <div class="form-group">
+                    <label for="add-poster">Cartaz</label>
+                    <input type="file" id="add-poster" name="poster" accept="image/*" required>
+                </div>
+            </div>
+            <button type="submit" class="primary-btn">Adicionar</button>
+        </form>
+    </section>
+
+    <section class="list-section">
+        <h2>Filmes Cadastrados</h2>
+        <div id="movies-grid" class="movies-grid"></div>
+    </section>
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
