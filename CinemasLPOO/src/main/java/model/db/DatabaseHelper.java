@@ -1,46 +1,49 @@
 package model.db;
 
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DatabaseHelper {
 
-    // Ativa FK na conexão
-    private static final String URL = "jdbc:sqlite:cinema.db?foreign_keys=on";
+    // URL de conexão do H2
+    // "jdbc:h2:./cinema" cria um arquivo chamado cinema.mv.db no diretório do projeto.
+    private static final String URL = "jdbc:h2:./cinema";
+    private static final String USER = "sa";      // usuário padrão
+    private static final String PASSWORD = "";    // senha padrão (vazia)
 
-    public static Connection connect() throws SQLException {
-        Connection conn = DriverManager.getConnection(URL);
-        // redundância saudável caso o driver ignore a query param
-        try (Statement st = conn.createStatement()) {
-            st.execute("PRAGMA foreign_keys = ON");
-        }
-        return conn;
+    static {
+        createTables();
     }
 
-    public static void createTables() {
-        // Crie primeiro a "tabela pai"
+    public static Connection connect() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    static void createTables() {
         String createCinemas = """
             CREATE TABLE IF NOT EXISTS cinemas (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
-                address TEXT,
-                city TEXT,
-                state TEXT,
-                zipCode TEXT,
-                phone TEXT
+                id IDENTITY PRIMARY KEY,
+                name VARCHAR(255),
+                location VARCHAR(255)
             );
         """;
 
         String createMovies = """
             CREATE TABLE IF NOT EXISTS movies (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title TEXT,
-                category TEXT,
-                posterUrl TEXT,
-                cinema_id INTEGER NOT NULL,
-                CONSTRAINT fk_movie_cinema
-                    FOREIGN KEY (cinema_id)
-                    REFERENCES cinemas(id)
-                    ON DELETE CASCADE
+                id IDENTITY PRIMARY KEY,
+                title VARCHAR(255),
+                category VARCHAR(255),
+                posterUrl VARCHAR(500),
+                idade INT,
+                duracao DOUBLE,
+                lancamento VARCHAR(50),
+                posterMime VARCHAR(100),
+                posterBlob BLOB,
+                cinema_id BIGINT,
+                FOREIGN KEY (cinema_id) REFERENCES cinemas(id) ON DELETE CASCADE
             );
         """;
 
